@@ -21,6 +21,14 @@ function showWeather(weather) {
     const wind = document.createElement('h3');
     wind.textContent = "Wind: " + weather.wind.speed + " mph, " + weather.wind.deg + "°";
     searchResultDiv.append(wind);
+
+    const weatherInfo = weather.weather[0];
+    if(weatherInfo && weatherInfo.description){
+        const description = document.createElement('h3');
+        description.textContent = weatherInfo.description;
+        searchResultDiv.append(description);
+
+    }
 }
 
     function showErrorMessage(message) {
