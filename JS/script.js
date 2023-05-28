@@ -1,70 +1,191 @@
 const form = document.querySelector('#weatherForm');
 const searchResultDiv = document.querySelector('#result-container');
 const errorH3 = document.querySelector('#error');
+const increaseButton = document.querySelector('#increase-button');
+const decreaseButton = document.querySelector('#decrease-button');
+const forecastItemElement = document.createElement('p');
+forecastItemElement.classList.add('forecast-item');
 
 form.addEventListener("submit", fetchWeather);
+increaseButton.addEventListener("click", increaseInterval);
+decreaseButton.addEventListener("click", decreaseInterval);
+
+let forecastHours = 12;
+let city = '';
 
 function showWeather(weather) {
     console.log(weather);
-    const city = document.createElement('h2');
-    city.textContent = weather.name;
-    searchResultDiv.append(city);
   
-    const temp = document.createElement('h3');
-    temp.textContent = "Temp: " + weather.main.temp + " °C";
-    searchResultDiv.append(temp);
+    const cityHeader = document.createElement('h2');
+    cityHeader.textContent = weather.name;
+    searchResultDiv.append(cityHeader);
   
-    const humidity = document.createElement('h3');
-    humidity.textContent = "Humidity: " + weather.main.humidity + " %";
-    searchResultDiv.append(humidity);
+    const forecastData = weather.list;
   
-    const wind = document.createElement('h3');
-    const windSpeedMps = weather.wind.speed * 0.44704; 
-    wind.textContent = "Wind: " + windSpeedMps.toFixed(2) + " m/s, " + weather.wind.deg + "°";
-    searchResultDiv.append(wind);
+    forecastData.slice(0, forecastHours / 3).forEach((forecastItem) => {
+      const forecastItemTime = new Date(forecastItem.dt * 1000);
+      const forecastItemHour = forecastItemTime.getHours();
+      const forecastItemTemperature = forecastItem.main.temp;
   
-    const weatherInfo = weather.weather[0];
-    if (weatherInfo && weatherInfo.icon) {
-      const iconUrl = `https://openweathermap.org/img/wn/${weatherInfo.icon}.png`; 
-      const iconInfo = document.createElement('h3');
-      iconInfo.textContent = weatherInfo.description;
-      const icon = document.createElement('img');
-      icon.src = iconUrl; 
-      searchResultDiv.append(iconInfo);
-      searchResultDiv.append(icon);
-    }
-    searchResultDiv.style.display = "block";
-}
+      const forecastItemContainer = document.createElement('div');
+      forecastItemContainer.classList.add('forecast-item');
+  
+      const forecastItemElement = document.createElement('p');
+      forecastItemElement.textContent = `${forecastItemHour}h ${forecastItemTemperature}°C`;
+      forecastItemContainer.append(forecastItemElement);
+  
+      const weatherInfo = forecastItem.weather[0];
+      if (weatherInfo && weatherInfo.icon) {
+        const iconUrl = `https://openweathermap.org/img/wn/${weatherInfo.icon}.png`;
+        const iconInfo = document.createElement('h3');
+        iconInfo.textContent = weatherInfo.description;
+        const icon = document.createElement('img');
+        icon.src = iconUrl;
+        forecastItemContainer.append(icon);
+        forecastItemContainer.append(iconInfo);
+      }
+  
+      searchResultDiv.append(forecastItemContainer);
+    });
+  
+    searchResultDiv.style.display = "flex";
+  }
 
 function showErrorMessage(message) {
-    errorH3.textContent = message;
-    searchResultDiv.style.display = "none";
+  errorH3.textContent = message;
+  searchResultDiv.style.display = "none";
 }
-
 
 function fetchWeather(event) {
-    event.preventDefault();
-    searchResultDiv.innerHTML = ''; 
-    errorH3.textContent = '';
-    const city = event.target.elements[0].value;
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=e26f81e1cb4b35fdc36b4b6cd3ea2ca5`;
-   
-    fetch(weatherUrl)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('City not found');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            showWeather(data);
-        })
-        .catch((error) => {
-            console.log(error);
-            showErrorMessage('City not found');
-        });
+  event.preventDefault();
+  searchResultDiv.innerHTML = '';
+  errorH3.textContent = '';
+  city = event.target.elements[0].value;
+  const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=e26f81e1cb4b35fdc36b4b6cd3ea2ca5`;
+
+  fetch(weatherUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('City not found');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      showWeather(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      showErrorMessage('City not found');
+    });
 }
+
+function increaseInterval() {
+  forecastHours += 3;
+  if (city !== '') {
+    fetchWeatherByCity(city);
+  }
+}
+
+function decreaseInterval() {
+  if (forecastHours > 3) {
+    forecastHours -= 3;
+    if (city !== '') {
+      fetchWeatherByCity(city);
+    }
+  }
+}
+
+function fetchWeatherByCity(city) {
+  const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=e26f81e1cb4b35fdc36b4b6cd3ea2ca5`;
+
+  fetch(weatherUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('City not found');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      searchResultDiv.innerHTML = '';
+      showWeather(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      showErrorMessage('City not found');
+    });
+}
+
+
+
+// const form = document.querySelector('#weatherForm');
+// const searchResultDiv = document.querySelector('#result-container');
+// const errorH3 = document.querySelector('#error');
+
+// form.addEventListener("submit", fetchWeather);
+
+// function showWeather(weather) {
+//     console.log(weather);
+//     const city = document.createElement('h2');
+//     city.textContent = weather.name;
+//     searchResultDiv.append(city);
+  
+//     const temp = document.createElement('h3');
+//     temp.textContent = "Temp: " + weather.main.temp + " °C";
+//     searchResultDiv.append(temp);
+  
+//     const humidity = document.createElement('h3');
+//     humidity.textContent = "Humidity: " + weather.main.humidity + " %";
+//     searchResultDiv.append(humidity);
+  
+//     const wind = document.createElement('h3');
+//     const windSpeedMps = weather.wind.speed * 0.44704; 
+//     wind.textContent = "Wind: " + windSpeedMps.toFixed(2) + " m/s, " + weather.wind.deg + "°";
+//     searchResultDiv.append(wind);
+  
+//     const weatherInfo = weather.weather[0];
+//     if (weatherInfo && weatherInfo.icon) {
+//       const iconUrl = `https://openweathermap.org/img/wn/${weatherInfo.icon}.png`; 
+//       const iconInfo = document.createElement('h3');
+//       iconInfo.textContent = weatherInfo.description;
+//       const icon = document.createElement('img');
+//       icon.src = iconUrl; 
+//       searchResultDiv.append(iconInfo);
+//       searchResultDiv.append(icon);
+//     }
+//     searchResultDiv.style.display = "block";
+// }
+
+// function showErrorMessage(message) {
+//     errorH3.textContent = message;
+//     searchResultDiv.style.display = "none";
+// }
+
+
+// function fetchWeather(event) {
+//     event.preventDefault();
+//     searchResultDiv.innerHTML = ''; 
+//     errorH3.textContent = '';
+//     const city = event.target.elements[0].value;
+//     const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=e26f81e1cb4b35fdc36b4b6cd3ea2ca5`;
+   
+//     fetch(weatherUrl)
+//         .then((response) => {
+//             if (!response.ok) {
+//                 throw new Error('City not found');
+//             }
+//             return response.json();
+//         })
+//         .then((data) => {
+//             console.log(data);
+//             showWeather(data);
+//         })
+//         .catch((error) => {
+//             console.log(error);
+//             showErrorMessage('City not found');
+//         });
+// }
 
 
 

@@ -30,13 +30,28 @@ body{
     box-shadow: 0 4px 8px 0 rgba(0,0,0.1);
     padding: 1rem;
     border-radius: 1rem;
+    margin-bottom: 2rem;
   }
 
-  #result-container{
+  #result-container {
     display: none;
     padding: 2rem;
     box-shadow: 0 4px 8px 0 rgba(0,0,0.1);
     background: linear-gradient(to bottom, #87CEEB, #1E90FF);
     border-radius: 1rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 2rem; /* Uppdatering: Lägg till ett mellanrum mellan form och result-container */
+    flex-grow: 1; /* Uppdatering: Fyll ut utrymmet under form */
   }
-
+  
+  .forecast-item {
+    flex-basis: 33.33%;
+    padding: 1rem;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0.1); /* Uppdatering: Lägg till skugga för att separera intervallen */
+    margin-bottom: 1rem; /* Uppdatering: Lägg till mellanrum mellan varje intervall */
+  }
