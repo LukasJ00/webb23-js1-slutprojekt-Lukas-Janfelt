@@ -44,14 +44,14 @@ body{
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 2rem; /* Uppdatering: Lägg till ett mellanrum mellan form och result-container */
-    flex-grow: 1; /* Uppdatering: Fyll ut utrymmet under form */
+    margin-top: 2rem; 
+    flex-grow: 1; 
   }
   
   .forecast-item {
     flex-basis: 33.33%;
     padding: 1rem;
     box-sizing: border-box;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0.1); /* Uppdatering: Lägg till skugga för att separera intervallen */
-    margin-bottom: 1rem; /* Uppdatering: Lägg till mellanrum mellan varje intervall */
+    box-shadow: 0 2px 4px 0 rgba(0,0,0.1); 
+    margin-bottom: 1rem; 
   }
