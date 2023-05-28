@@ -8,7 +8,6 @@ body{
     height: 100vh;
     flex-direction: column;
     flex-wrap: wrap;
-    
   }
 
   input{
@@ -19,15 +18,18 @@ body{
     height: 1.5rem;
     flex-direction: column;
     flex-wrap: wrap;
+    border-radius: 0.5rem;
   }
 
   button{
     margin: 0.5rem;
+    border-radius: 0.5rem;
   }
 
   form{
     box-shadow: 0 4px 8px 0 rgba(0,0,0.1);
     padding: 1rem;
+    border-radius: 1rem;
   }
 
   #result-container{
@@ -35,4 +37,6 @@ body{
     padding: 2rem;
     box-shadow: 0 4px 8px 0 rgba(0,0,0.1);
     background: linear-gradient(to bottom, #87CEEB, #1E90FF);
+    border-radius: 1rem;
   }
+

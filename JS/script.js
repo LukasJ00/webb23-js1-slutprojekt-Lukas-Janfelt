@@ -26,17 +26,21 @@ function showWeather(weather) {
     const weatherInfo = weather.weather[0];
     if (weatherInfo && weatherInfo.icon) {
       const iconUrl = `https://openweathermap.org/img/wn/${weatherInfo.icon}.png`; 
+      const iconInfo = document.createElement('h3');
+      iconInfo.textContent = weatherInfo.description;
       const icon = document.createElement('img');
       icon.src = iconUrl; 
+      searchResultDiv.append(iconInfo);
       searchResultDiv.append(icon);
     }
     searchResultDiv.style.display = "block";
-  }
+}
 
-    function showErrorMessage(message) {
+function showErrorMessage(message) {
     errorH3.textContent = message;
     searchResultDiv.style.display = "none";
 }
+
 
 function fetchWeather(event) {
     event.preventDefault();
@@ -61,5 +65,18 @@ function fetchWeather(event) {
             showErrorMessage('City not found');
         });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
