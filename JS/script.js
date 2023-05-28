@@ -7,32 +7,35 @@ form.addEventListener("submit", fetchWeather);
 function showWeather(weather) {
     console.log(weather);
     const city = document.createElement('h2');
-    city.textContent = weather.name; 
+    city.textContent = weather.name;
     searchResultDiv.append(city);
-
+  
     const temp = document.createElement('h3');
     temp.textContent = "Temp: " + weather.main.temp + " °C";
     searchResultDiv.append(temp);
-
+  
     const humidity = document.createElement('h3');
     humidity.textContent = "Humidity: " + weather.main.humidity + " %";
     searchResultDiv.append(humidity);
-
+  
     const wind = document.createElement('h3');
-    wind.textContent = "Wind: " + weather.wind.speed + " mph, " + weather.wind.deg + "°";
+    const windSpeedMps = weather.wind.speed * 0.44704; 
+    wind.textContent = "Wind: " + windSpeedMps.toFixed(2) + " m/s, " + weather.wind.deg + "°";
     searchResultDiv.append(wind);
-
+  
     const weatherInfo = weather.weather[0];
-    if(weatherInfo && weatherInfo.description){
-        const description = document.createElement('h3');
-        description.textContent = weatherInfo.description;
-        searchResultDiv.append(description);
-
+    if (weatherInfo && weatherInfo.icon) {
+      const iconUrl = `https://openweathermap.org/img/wn/${weatherInfo.icon}.png`; 
+      const icon = document.createElement('img');
+      icon.src = iconUrl; 
+      searchResultDiv.append(icon);
     }
-}
+    searchResultDiv.style.display = "block";
+  }
 
     function showErrorMessage(message) {
     errorH3.textContent = message;
+    searchResultDiv.style.display = "none";
 }
 
 function fetchWeather(event) {
@@ -58,3 +61,5 @@ function fetchWeather(event) {
             showErrorMessage('City not found');
         });
 }
+
+
