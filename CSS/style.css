@@ -2,7 +2,9 @@ body{
   margin: 0;
   padding: 0;
   background: linear-gradient(45deg, #FFD700, #FF8C00);
-  }
+  overflow-x: hidden;
+  
+}
 
   input{
     border-radius: 0.5rem;
@@ -29,10 +31,21 @@ body{
     text-align: center;
   }
 
+  h2{
+    display: block;
+    text-align: center;
+    margin: 2rem auto;
+    width: max-content;
+    clear: both;
+  }
   div{
     border-radius: 2rem;
     padding: 1rem;
     margin: 1rem;
+  }
+  #error{
+    display: flex;
+    justify-content: center;
   }
 
   #result-container {
@@ -41,13 +54,14 @@ body{
     box-shadow: 0 4px 8px 0 rgba(0,0,0.1);
     background: linear-gradient(to bottom, #87CEEB, #1E90FF);
     border-radius: 1rem;
-    width: 100%;
+    width: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 2rem; 
+    margin: 2rem;
     flex-grow: 1; 
+    overflow: hidden; 
   }
   
   .forecast-item {
@@ -56,4 +70,34 @@ body{
     box-sizing: border-box;
     box-shadow: 0 2px 4px 0 rgba(0,0,0.1); 
     margin-bottom: 1rem; 
+  }
+
+  #interval-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .button-container {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .input-container {
+    margin: 0;
+    flex: 2;
+    text-align: center;
+  }
+  
+  #decrease-button {
+    margin: 0;
+    margin-right: 0.5rem;
+  }
+  
+  #increase-button {
+    margin: 0;
+    margin-left: 0.5rem;
   }

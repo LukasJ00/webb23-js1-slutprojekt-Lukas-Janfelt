@@ -19,14 +19,13 @@ function showWeather(weather) {
 
   searchResultDiv.innerHTML = '';
 
-  const cityHeader = document.createElement('h2');
-  cityHeader.textContent = weather.name;
-  searchResultDiv.append(cityHeader);
+  const cityNameElement = document.getElementById('city-name');
+  cityNameElement.textContent = weather.city.name;
 
   const forecastData = weather.list;
 
   for (let i = 0; i < forecastInterval; i += 3) {
-    const forecastItem = forecastData[i/3];
+    const forecastItem = forecastData[i / 3];
     const forecastItemTime = new Date(forecastItem.dt * 1000);
     const forecastItemHour = forecastItemTime.toLocaleTimeString('en-US', {
       hour: 'numeric',
@@ -34,13 +33,27 @@ function showWeather(weather) {
       hour12: true
     });
     const forecastItemTemperature = forecastItem.main.temp;
+    const forecastItemHumidity = forecastItem.main.humidity;
+    const forecastItemWindSpeed = forecastItem.wind.speed;
 
     const forecastItemContainer = document.createElement('div');
     forecastItemContainer.classList.add('forecast-item');
 
-    const forecastItemElement = document.createElement('p');
-    forecastItemElement.textContent = `${forecastItemHour} ${forecastItemTemperature}°C`;
-    forecastItemContainer.append(forecastItemElement);
+    const forecastItemTimeElement = document.createElement('h3');
+    forecastItemTimeElement.textContent = forecastItemHour;
+    forecastItemContainer.append(forecastItemTimeElement);
+
+    const temperatureElement = document.createElement('p');
+    temperatureElement.textContent = `Temp: ${forecastItemTemperature} °C`;
+    forecastItemContainer.append(temperatureElement);
+
+    const humidityElement = document.createElement('p');
+    humidityElement.textContent = `Humidity: ${forecastItemHumidity} %`;
+    forecastItemContainer.append(humidityElement);
+
+    const windSpeedElement = document.createElement('p');
+    windSpeedElement.textContent = `Wind Speed: ${forecastItemWindSpeed} m/s`;
+    forecastItemContainer.append(windSpeedElement);
 
     const weatherInfo = forecastItem.weather[0];
     if (weatherInfo && weatherInfo.icon) {
@@ -133,6 +146,13 @@ function fetchWeatherByCity(city) {
       showErrorMessage('City not found');
     });
 }
+
+
+
+
+
+
+
 
 // const form = document.querySelector('#weatherForm');
 // const searchResultDiv = document.querySelector('#result-container');
