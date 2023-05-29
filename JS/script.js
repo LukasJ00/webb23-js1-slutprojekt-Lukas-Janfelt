@@ -3,57 +3,65 @@ const searchResultDiv = document.querySelector('#result-container');
 const errorH3 = document.querySelector('#error');
 const increaseButton = document.querySelector('#increase-button');
 const decreaseButton = document.querySelector('#decrease-button');
-const forecastItemElement = document.createElement('p');
-forecastItemElement.classList.add('forecast-item');
+const intervalInput = document.querySelector('#interval-input');
 
-form.addEventListener("submit", fetchWeather);
-increaseButton.addEventListener("click", increaseInterval);
-decreaseButton.addEventListener("click", decreaseInterval);
+form.addEventListener('submit', fetchWeather);
+increaseButton.addEventListener('click', increaseInterval);
+decreaseButton.addEventListener('click', decreaseInterval);
+intervalInput.addEventListener('change', updateInterval);
 
-let forecastHours = 12;
+let forecastInterval = 12; // Standardintervall på 12 timmar
+const minForecastInterval = 3; // Minsta intervall på 3 timmar
 let city = '';
 
 function showWeather(weather) {
-    console.log(weather);
-  
-    const cityHeader = document.createElement('h2');
-    cityHeader.textContent = weather.name;
-    searchResultDiv.append(cityHeader);
-  
-    const forecastData = weather.list;
-  
-    forecastData.slice(0, forecastHours / 3).forEach((forecastItem) => {
-      const forecastItemTime = new Date(forecastItem.dt * 1000);
-      const forecastItemHour = forecastItemTime.getHours();
-      const forecastItemTemperature = forecastItem.main.temp;
-  
-      const forecastItemContainer = document.createElement('div');
-      forecastItemContainer.classList.add('forecast-item');
-  
-      const forecastItemElement = document.createElement('p');
-      forecastItemElement.textContent = `${forecastItemHour}h ${forecastItemTemperature}°C`;
-      forecastItemContainer.append(forecastItemElement);
-  
-      const weatherInfo = forecastItem.weather[0];
-      if (weatherInfo && weatherInfo.icon) {
-        const iconUrl = `https://openweathermap.org/img/wn/${weatherInfo.icon}.png`;
-        const iconInfo = document.createElement('h3');
-        iconInfo.textContent = weatherInfo.description;
-        const icon = document.createElement('img');
-        icon.src = iconUrl;
-        forecastItemContainer.append(icon);
-        forecastItemContainer.append(iconInfo);
-      }
-  
-      searchResultDiv.append(forecastItemContainer);
+  console.log(weather);
+
+  searchResultDiv.innerHTML = '';
+
+  const cityHeader = document.createElement('h2');
+  cityHeader.textContent = weather.name;
+  searchResultDiv.append(cityHeader);
+
+  const forecastData = weather.list;
+
+  for (let i = 0; i < forecastInterval; i += 3) {
+    const forecastItem = forecastData[i/3];
+    const forecastItemTime = new Date(forecastItem.dt * 1000);
+    const forecastItemHour = forecastItemTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
     });
-  
-    searchResultDiv.style.display = "flex";
+    const forecastItemTemperature = forecastItem.main.temp;
+
+    const forecastItemContainer = document.createElement('div');
+    forecastItemContainer.classList.add('forecast-item');
+
+    const forecastItemElement = document.createElement('p');
+    forecastItemElement.textContent = `${forecastItemHour} ${forecastItemTemperature}°C`;
+    forecastItemContainer.append(forecastItemElement);
+
+    const weatherInfo = forecastItem.weather[0];
+    if (weatherInfo && weatherInfo.icon) {
+      const iconUrl = `https://openweathermap.org/img/wn/${weatherInfo.icon}.png`;
+      const iconInfo = document.createElement('h3');
+      iconInfo.textContent = weatherInfo.description;
+      const icon = document.createElement('img');
+      icon.src = iconUrl;
+      forecastItemContainer.append(icon);
+      forecastItemContainer.append(iconInfo);
+    }
+
+    searchResultDiv.append(forecastItemContainer);
   }
+
+  searchResultDiv.style.display = 'flex';
+}
 
 function showErrorMessage(message) {
   errorH3.textContent = message;
-  searchResultDiv.style.display = "none";
+  searchResultDiv.style.display = 'none';
 }
 
 function fetchWeather(event) {
@@ -81,19 +89,29 @@ function fetchWeather(event) {
 }
 
 function increaseInterval() {
-  forecastHours += 3;
-  if (city !== '') {
+  forecastInterval += 3;
+  updateIntervalInput();
+  fetchWeatherByCity(city);
+}
+
+function decreaseInterval() {
+  if (forecastInterval - 3 >= minForecastInterval) {
+    forecastInterval -= 3;
+    updateIntervalInput();
     fetchWeatherByCity(city);
   }
 }
 
-function decreaseInterval() {
-  if (forecastHours > 3) {
-    forecastHours -= 3;
-    if (city !== '') {
-      fetchWeatherByCity(city);
-    }
+function updateInterval() {
+  const newForecastInterval = parseInt(intervalInput.value);
+  if (newForecastInterval >= minForecastInterval) {
+    forecastInterval = newForecastInterval;
+    fetchWeatherByCity(city);
   }
+}
+
+function updateIntervalInput() {
+  intervalInput.value = forecastInterval.toString();
 }
 
 function fetchWeatherByCity(city) {
@@ -108,7 +126,6 @@ function fetchWeatherByCity(city) {
     })
     .then((data) => {
       console.log(data);
-      searchResultDiv.innerHTML = '';
       showWeather(data);
     })
     .catch((error) => {
@@ -116,8 +133,6 @@ function fetchWeatherByCity(city) {
       showErrorMessage('City not found');
     });
 }
-
-
 
 // const form = document.querySelector('#weatherForm');
 // const searchResultDiv = document.querySelector('#result-container');

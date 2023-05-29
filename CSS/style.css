@@ -1,23 +1,10 @@
 body{
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 0;
-    padding: 1rem;
-    background: linear-gradient(45deg, #FFD700, #FF8C00);
-    height: 100vh;
-    flex-direction: column;
-    flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(45deg, #FFD700, #FF8C00);
   }
 
   input{
-    margin: auto;
-    padding: 0;
-    display: flex;
-    width: auto;
-    height: 1.5rem;
-    flex-direction: column;
-    flex-wrap: wrap;
     border-radius: 0.5rem;
   }
 
@@ -25,12 +12,27 @@ body{
     margin: 0.5rem;
     border-radius: 0.5rem;
   }
-
-  form{
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     box-shadow: 0 4px 8px 0 rgba(0,0,0.1);
     padding: 1rem;
     border-radius: 1rem;
     margin-bottom: 2rem;
+    max-width: 20rem;
+    margin: auto;
+  }
+  h1 {
+    text-align: center;
+  }
+
+  div{
+    border-radius: 2rem;
+    padding: 1rem;
+    margin: 1rem;
   }
 
   #result-container {

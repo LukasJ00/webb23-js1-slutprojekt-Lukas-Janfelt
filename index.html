@@ -6,16 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/style.css">
     <script src="./JS/script.js" defer></script>
-    <title>Väder-app</title>
+    <title>Weather-App</title>
 </head>
 <body>
-    <h1>Väder-app</h1>
+    <h1>Weather-App</h1>
     <form id="weatherForm">
         <input type="text" placeholder="City">
         <button type="submit">Search weather</button>
-        <div id="interval-controls">
-            <button id="increase-button">Increase Interval</button>
+        <h2>Weatherforcast</h2>
+        <div id="interval-controls"> 
             <button id="decrease-button">Decrease Interval</button>
+            <button id="increase-button">Increase Interval</button>
             <input type="number" id="interval-input" value="12" min="3" max="24" step="3">
         </div>
     </form>
