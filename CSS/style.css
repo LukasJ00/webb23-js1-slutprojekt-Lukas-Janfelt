@@ -101,3 +101,7 @@ body{
     margin: 0;
     margin-left: 0.5rem;
   }
+
+  #hours{
+    margin-top: 0;
+  }

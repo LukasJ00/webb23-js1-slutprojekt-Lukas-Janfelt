@@ -148,7 +148,7 @@ function fetchWeatherByCity(city) {
 }
 
 
-
+// ändra så att forecasten visar först ju nu och sedan utgår ifrån intervallerna 3 timmar framååt beronde på vald intervall. upp til 12 timmar. eventuellt ha vädret just nu under search weather och sen se timmar framåt.  
 
 
 
