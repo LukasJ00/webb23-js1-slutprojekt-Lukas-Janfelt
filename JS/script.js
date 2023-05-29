@@ -12,8 +12,8 @@ increaseButton.addEventListener('click', increaseInterval);
 decreaseButton.addEventListener('click', decreaseInterval);
 intervalInput.addEventListener('change', updateInterval);
 
-let forecastInterval = 12; // Standardintervall på 12 timmar
-const minForecastInterval = 3; // Minsta intervall på 3 timmar
+let forecastInterval = 12;
+const minForecastInterval = 3; 
 let city = '';
 
 function showWeather(weather) {
@@ -24,7 +24,6 @@ function showWeather(weather) {
 
   cityNameElement.textContent = weather.city.name;
 
-  // Skapa element för nuvarande väder
   const currentWeatherContainer = document.createElement('div');
   currentWeatherContainer.classList.add('forecast-item');
 
