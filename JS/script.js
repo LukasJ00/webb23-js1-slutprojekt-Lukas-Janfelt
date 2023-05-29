@@ -5,6 +5,7 @@ const increaseButton = document.querySelector('#increase-button');
 const decreaseButton = document.querySelector('#decrease-button');
 const intervalInput = document.querySelector('#interval-input');
 intervalInput.setAttribute('max', '12');
+const cityNameElement = document.getElementById('city-name');
 
 form.addEventListener('submit', fetchWeather);
 increaseButton.addEventListener('click', increaseInterval);
@@ -19,33 +20,31 @@ function showWeather(weather) {
   console.log(weather);
 
   searchResultDiv.innerHTML = '';
+  errorH3.textContent = '';
 
-  const cityNameElement = document.getElementById('city-name');
   cityNameElement.textContent = weather.city.name;
-
-  const forecastData = weather.list;
 
   // Skapa element för nuvarande väder
   const currentWeatherContainer = document.createElement('div');
   currentWeatherContainer.classList.add('forecast-item');
 
-  const currentWeatherTitle = document.createElement('h2');
+  const currentWeatherTitle = document.createElement('h3');
   currentWeatherTitle.textContent = 'Current Weather';
   currentWeatherContainer.append(currentWeatherTitle);
 
-  const currentWeatherTemperature = document.createElement('h3');
-  currentWeatherTemperature.textContent = `Temp: ${forecastData[0].main.temp} °C`;
+  const currentWeatherTemperature = document.createElement('p');
+  currentWeatherTemperature.textContent = `Temp: ${weather.list[0].main.temp} °C`;
   currentWeatherContainer.append(currentWeatherTemperature);
 
-  const currentWeatherHumidity = document.createElement('h3');
-  currentWeatherHumidity.textContent = `Humidity: ${forecastData[0].main.humidity} %`;
+  const currentWeatherHumidity = document.createElement('p');
+  currentWeatherHumidity.textContent = `Humidity: ${weather.list[0].main.humidity} %`;
   currentWeatherContainer.append(currentWeatherHumidity);
 
-  const currentWeatherWindSpeed = document.createElement('h3');
-  currentWeatherWindSpeed.textContent = `Wind Speed: ${forecastData[0].wind.speed} m/s`;
+  const currentWeatherWindSpeed = document.createElement('p');
+  currentWeatherWindSpeed.textContent = `Wind Speed: ${weather.list[0].wind.speed} m/s`;
   currentWeatherContainer.append(currentWeatherWindSpeed);
 
-  const currentWeatherInfo = forecastData[0].weather[0];
+  const currentWeatherInfo = weather.list[0].weather[0];
   if (currentWeatherInfo && currentWeatherInfo.icon) {
     const iconUrl = `https://openweathermap.org/img/wn/${currentWeatherInfo.icon}.png`;
     const iconInfo = document.createElement('h3');
@@ -58,15 +57,15 @@ function showWeather(weather) {
 
   searchResultDiv.append(currentWeatherContainer);
 
-  // Skapa element för prognoser
+  
   for (let i = 3; i <= forecastInterval; i += 3) {
-    const forecastItem = forecastData[(i / 3) - 1];
+    const forecastItem = weather.list[(i / 3) - 1];
     const forecastItemTime = new Date(forecastItem.dt * 1000);
 
     const forecastItemContainer = document.createElement('div');
     forecastItemContainer.classList.add('forecast-item');
 
-    const forecastItemTimeElement = document.createElement('h2');
+    const forecastItemTimeElement = document.createElement('h3');
     forecastItemTimeElement.textContent = forecastItemTime.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: 'numeric',
@@ -74,15 +73,15 @@ function showWeather(weather) {
     });
     forecastItemContainer.append(forecastItemTimeElement);
 
-    const forecastItemTemperature = document.createElement('h3');
+    const forecastItemTemperature = document.createElement('p');
     forecastItemTemperature.textContent = `Temp: ${forecastItem.main.temp} °C`;
     forecastItemContainer.append(forecastItemTemperature);
 
-    const forecastItemHumidity = document.createElement('h3');
+    const forecastItemHumidity = document.createElement('p');
     forecastItemHumidity.textContent = `Humidity: ${forecastItem.main.humidity} %`;
     forecastItemContainer.append(forecastItemHumidity);
 
-    const forecastItemWindSpeed = document.createElement('h3');
+    const forecastItemWindSpeed = document.createElement('p');
     forecastItemWindSpeed.textContent = `Wind Speed: ${forecastItem.wind.speed} m/s`;
     forecastItemContainer.append(forecastItemWindSpeed);
 
@@ -104,6 +103,7 @@ function showWeather(weather) {
 }
 
 function showErrorMessage(message) {
+  searchResultDiv.innerHTML = '';
   errorH3.textContent = message;
   searchResultDiv.style.display = 'none';
 }
@@ -129,6 +129,8 @@ function fetchWeather(event) {
     .catch((error) => {
       console.log(error);
       showErrorMessage('City not found');
+      searchResultDiv.innerHTML = ''; 
+      cityNameElement.textContent = ''; 
     });
 }
 
@@ -175,11 +177,10 @@ function fetchWeatherByCity(city) {
     .catch((error) => {
       console.log(error);
       showErrorMessage('City not found');
+      searchResultDiv.innerHTML = ''; 
+      cityNameElement.textContent = ''; 
     });
 }
-
-
-
 
 
 
@@ -195,9 +196,6 @@ function fetchWeatherByCity(city) {
 
 
 
-
-
-
 // const form = document.querySelector('#weatherForm');
 // const searchResultDiv = document.querySelector('#result-container');
 // const errorH3 = document.querySelector('#error');
@@ -205,6 +203,7 @@ function fetchWeatherByCity(city) {
 // const decreaseButton = document.querySelector('#decrease-button');
 // const intervalInput = document.querySelector('#interval-input');
 // intervalInput.setAttribute('max', '12');
+// const cityNameElement = document.getElementById('city-name');
 
 // form.addEventListener('submit', fetchWeather);
 // increaseButton.addEventListener('click', increaseInterval);
@@ -219,42 +218,70 @@ function fetchWeatherByCity(city) {
 //   console.log(weather);
 
 //   searchResultDiv.innerHTML = '';
+//   errorH3.textContent = '';
 
-//   const cityNameElement = document.getElementById('city-name');
 //   cityNameElement.textContent = weather.city.name;
 
-//   const forecastData = weather.list;
+//   // Skapa element för nuvarande väder
+//   const currentWeatherContainer = document.createElement('div');
+//   currentWeatherContainer.classList.add('forecast-item');
 
-//   for (let i = 0; i < forecastInterval; i += 3) {
-//     const forecastItem = forecastData[i / 3];
+//   const currentWeatherTitle = document.createElement('h3');
+//   currentWeatherTitle.textContent = 'Current Weather';
+//   currentWeatherContainer.append(currentWeatherTitle);
+
+//   const currentWeatherTemperature = document.createElement('p');
+//   currentWeatherTemperature.textContent = `Temp: ${weather.list[0].main.temp} °C`;
+//   currentWeatherContainer.append(currentWeatherTemperature);
+
+//   const currentWeatherHumidity = document.createElement('p');
+//   currentWeatherHumidity.textContent = `Humidity: ${weather.list[0].main.humidity} %`;
+//   currentWeatherContainer.append(currentWeatherHumidity);
+
+//   const currentWeatherWindSpeed = document.createElement('p');
+//   currentWeatherWindSpeed.textContent = `Wind Speed: ${weather.list[0].wind.speed} m/s`;
+//   currentWeatherContainer.append(currentWeatherWindSpeed);
+
+//   const currentWeatherInfo = weather.list[0].weather[0];
+//   if (currentWeatherInfo && currentWeatherInfo.icon) {
+//     const iconUrl = `https://openweathermap.org/img/wn/${currentWeatherInfo.icon}.png`;
+//     const iconInfo = document.createElement('h3');
+//     iconInfo.textContent = currentWeatherInfo.description;
+//     const icon = document.createElement('img');
+//     icon.src = iconUrl;
+//     currentWeatherContainer.append(icon);
+//     currentWeatherContainer.append(iconInfo);
+//   }
+
+//   searchResultDiv.append(currentWeatherContainer);
+
+  
+//   for (let i = 3; i <= forecastInterval; i += 3) {
+//     const forecastItem = weather.list[(i / 3) - 1];
 //     const forecastItemTime = new Date(forecastItem.dt * 1000);
-//     const forecastItemHour = forecastItemTime.toLocaleTimeString('en-US', {
-//       hour: 'numeric',
-//       minute: 'numeric',
-//       hour12: true
-//     });
-//     const forecastItemTemperature = forecastItem.main.temp;
-//     const forecastItemHumidity = forecastItem.main.humidity;
-//     const forecastItemWindSpeed = forecastItem.wind.speed;
 
 //     const forecastItemContainer = document.createElement('div');
 //     forecastItemContainer.classList.add('forecast-item');
 
 //     const forecastItemTimeElement = document.createElement('h3');
-//     forecastItemTimeElement.textContent = forecastItemHour;
+//     forecastItemTimeElement.textContent = forecastItemTime.toLocaleTimeString('en-US', {
+//       hour: 'numeric',
+//       minute: 'numeric',
+//       hour12: true
+//     });
 //     forecastItemContainer.append(forecastItemTimeElement);
 
-//     const temperatureElement = document.createElement('p');
-//     temperatureElement.textContent = `Temp: ${forecastItemTemperature} °C`;
-//     forecastItemContainer.append(temperatureElement);
+//     const forecastItemTemperature = document.createElement('p');
+//     forecastItemTemperature.textContent = `Temp: ${forecastItem.main.temp} °C`;
+//     forecastItemContainer.append(forecastItemTemperature);
 
-//     const humidityElement = document.createElement('p');
-//     humidityElement.textContent = `Humidity: ${forecastItemHumidity} %`;
-//     forecastItemContainer.append(humidityElement);
+//     const forecastItemHumidity = document.createElement('p');
+//     forecastItemHumidity.textContent = `Humidity: ${forecastItem.main.humidity} %`;
+//     forecastItemContainer.append(forecastItemHumidity);
 
-//     const windSpeedElement = document.createElement('p');
-//     windSpeedElement.textContent = `Wind Speed: ${forecastItemWindSpeed} m/s`;
-//     forecastItemContainer.append(windSpeedElement);
+//     const forecastItemWindSpeed = document.createElement('p');
+//     forecastItemWindSpeed.textContent = `Wind Speed: ${forecastItem.wind.speed} m/s`;
+//     forecastItemContainer.append(forecastItemWindSpeed);
 
 //     const weatherInfo = forecastItem.weather[0];
 //     if (weatherInfo && weatherInfo.icon) {
@@ -274,6 +301,7 @@ function fetchWeatherByCity(city) {
 // }
 
 // function showErrorMessage(message) {
+//   searchResultDiv.innerHTML = '';
 //   errorH3.textContent = message;
 //   searchResultDiv.style.display = 'none';
 // }
@@ -299,6 +327,8 @@ function fetchWeatherByCity(city) {
 //     .catch((error) => {
 //       console.log(error);
 //       showErrorMessage('City not found');
+//       searchResultDiv.innerHTML = ''; 
+//       cityNameElement.textContent = ''; 
 //     });
 // }
 
@@ -345,9 +375,10 @@ function fetchWeatherByCity(city) {
 //     .catch((error) => {
 //       console.log(error);
 //       showErrorMessage('City not found');
+//       searchResultDiv.innerHTML = ''; 
+//       cityNameElement.textContent = ''; 
 //     });
 // }
-
 
 
 
