@@ -4,19 +4,23 @@ const searchResultDiv = document.querySelector('#result-container');
 const errorH3 = document.querySelector('#error');
 const increaseButton = document.querySelector('#increase-button');
 const decreaseButton = document.querySelector('#decrease-button');
+increaseButton.addEventListener('click', increaseIntervalHandler);
+decreaseButton.addEventListener('click', decreaseIntervalHandler);
 const intervalInput = document.querySelector('#interval-input');
 intervalInput.setAttribute('max', '12');
+intervalInput.value = '3';
+
 const cityNameElement = document.getElementById('city-name');
 
 // Lägg till händelselyssnare för formuläret och knapparna
 form.addEventListener('submit', fetchWeather);
-increaseButton.addEventListener('click', increaseInterval);
-decreaseButton.addEventListener('click', decreaseInterval);
+increaseButton.addEventListener('click', increaseIntervalHandler);
+decreaseButton.addEventListener('click', decreaseIntervalHandler);
 intervalInput.addEventListener('change', updateInterval);
 
 // Variabler för väderintervallet och stad
-let forecastInterval = 12; // Standardintervall på 12 timmar
-const minForecastInterval = 3; // Minsta intervall på 3 timmar
+let forecastInterval = 1; // Standardintervall på 1, motsvarar 3 timmar
+const minForecastInterval = 3; // Minsta intervall på 1 timme
 let city = '';
 
 // Funktion för att visa väderinformation
@@ -66,9 +70,10 @@ function showWeather(weather) {
   searchResultDiv.append(currentWeatherContainer);
 
   // Skapa väderprognos för varje intervall
-  for (let i = 3; i <= forecastInterval; i += 3) {
-    const forecastItem = weather.list[(i / 3) - 1];
-    const forecastItemTime = new Date(forecastItem.dt * 1000);
+  const forecastItems = weather.list.slice(1, forecastInterval + 1);
+  for (let i = 0; i < forecastItems.length; i++) {
+    const forecastItem = forecastItems[i];
+    const forecastItemTime = new Date(forecastItem.dt_txt);
 
     const forecastItemContainer = document.createElement('div');
     forecastItemContainer.classList.add('forecast-item');
@@ -148,14 +153,16 @@ function fetchWeather(event) {
 }
 
 // Funktion för att öka väderintervallet
-function increaseInterval() {
-  forecastInterval += 3;
-  updateIntervalInput();
-  fetchWeatherByCity(city);
+function increaseIntervalHandler() {
+  if (forecastInterval + 3 <= 12) {
+    forecastInterval += 3;
+    updateIntervalInput();
+    fetchWeatherByCity(city);
+  }
 }
 
 // Funktion för att minska väderintervallet
-function decreaseInterval() {
+function decreaseIntervalHandler() {
   if (forecastInterval - 3 >= minForecastInterval) {
     forecastInterval -= 3;
     updateIntervalInput();
@@ -164,7 +171,7 @@ function decreaseInterval() {
 }
 
 // Funktion för att uppdatera väderintervallet
-function updateInterval() {
+function updateIntervalInput() {
   const newForecastInterval = parseInt(intervalInput.value);
   if (newForecastInterval >= minForecastInterval) {
     forecastInterval = newForecastInterval;
