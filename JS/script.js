@@ -180,7 +180,6 @@ function fetchWeatherByCity(city) {
       searchResultDiv.innerHTML = ''; 
       cityNameElement.textContent = ''; 
     });
-    
 }
 
 
