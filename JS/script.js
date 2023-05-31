@@ -17,8 +17,8 @@ decreaseButton.addEventListener('click', decreaseIntervalHandler);
 intervalInput.addEventListener('change', updateIntervalInput);
 
 // Variabler för väderintervallet och stad
-let forecastInterval = 3; 
-const minForecastInterval = 3; 
+let forecastInterval = 3;
+const minForecastInterval = 3;
 
 
 // Visa väderinformation
@@ -116,7 +116,7 @@ function showWeather(weather) {
   searchResultDiv.style.display = 'flex';
 
 
-// Ändra bakgrundsfärg baserat på temperaturen
+// Bakgrundsfärg baserat på temperaturen
 const currentTemperature = weather.list[0].main.temp;
 if (currentTemperature > 15) {
   searchResultDiv.style.backgroundColor = '#F5EC6F';
