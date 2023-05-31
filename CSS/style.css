@@ -52,7 +52,7 @@ body{
     display: none;
     padding: 2rem;
     box-shadow: 0 4px 8px 0 rgba(0,0,0.1);
-    background: linear-gradient(to bottom, #87CEEB, #1E90FF);
+    /* background: linear-gradient(to bottom, #87CEEB, #1E90FF); */
     border-radius: 1rem;
     width: auto;
     display: flex;
